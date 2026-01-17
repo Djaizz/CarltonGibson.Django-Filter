@@ -243,7 +243,7 @@ class BaseFilterSet:
     @property
     def qs(self):
         if not hasattr(self, "_qs"):
-            qs = self.queryset.all()
+            qs = self.queryset  # *** NO .all() for better compatibility with NeoModel ***
             if self.is_bound:
                 # ensure form validation before filtering
                 self.errors
