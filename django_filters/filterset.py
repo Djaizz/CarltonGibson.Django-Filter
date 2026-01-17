@@ -9,6 +9,8 @@ from django.db.models.constants import LOOKUP_SEP
 from django.db.models.fields.related import ManyToManyRel, ManyToOneRel, OneToOneRel
 from django.http import QueryDict
 
+from neomodel.sync_.match import NodeSet
+
 from .conf import settings
 from .constants import ALL_FIELDS
 from .filters import (
@@ -232,11 +234,11 @@ class BaseFilterSet:
         for name, value in self.form.cleaned_data.items():
             queryset = self.filters[name].filter(queryset, value)
             assert isinstance(
-                queryset, models.QuerySet
-            ), "Expected '%s.%s' to return a QuerySet, but got a %s instead." % (
+                queryset, models.QuerySet | NodeSet
+            ), "Expected '%s.%s' to return a QuerySet or NodeSet, but got a %s instead." % (
                 type(self).__name__,
                 name,
-                type(queryset).__name__,
+                type(queryset).__name__
             )
         return queryset
 
